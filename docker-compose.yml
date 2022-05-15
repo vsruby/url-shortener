@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  postgres:
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-url_shortener}
+    image: postgres:14.1-alpine
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - db_postgres_url_shortener:/var/lib/postgresql/data
+
+volumes:
+  db_postgres_url_shortener:
