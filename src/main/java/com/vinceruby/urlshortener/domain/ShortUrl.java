@@ -2,6 +2,7 @@ package com.vinceruby.urlshortener.domain;
 
 import com.vinceruby.urlshortener.domain.converter.UriAttributeConverter;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @AllArgsConstructor
+@Builder
 @Entity
 @Getter
 @NoArgsConstructor
