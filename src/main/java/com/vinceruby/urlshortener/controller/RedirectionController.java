@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.ws.rs.NotFoundException;
-
 @Controller
 @RequiredArgsConstructor
 @Slf4j
