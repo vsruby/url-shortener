@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 @RequestMapping("/short-urls")
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 public class ShortUrlController {
 
     @AllArgsConstructor
@@ -62,7 +64,11 @@ public class ShortUrlController {
     @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ShortUrlResponse create(@RequestBody CreateShortUrl input) {
+        log.debug("Attempting to create new short url for [{}]", input.getDestination());
+
         ShortUrl shortUrl = shortUrlService.create(URI.create(input.getDestination()));
+
+        log.debug("Created short url for [{}] with code [{}]", shortUrl.getDestination(), shortUrl.getCode());
 
         return ShortUrlResponse.fromDomain(shortUrl);
     }
