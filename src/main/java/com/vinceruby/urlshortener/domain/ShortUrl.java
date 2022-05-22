@@ -6,8 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -47,10 +49,12 @@ public class ShortUrl {
 
     @Column(name = "created_at", updatable = false)
     @CreatedDate
+    @CreationTimestamp
     private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
     @LastModifiedDate
+    @UpdateTimestamp
     private OffsetDateTime updatedAt;
 
     @Override

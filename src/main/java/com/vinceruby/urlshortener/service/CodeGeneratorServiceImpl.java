@@ -17,6 +17,14 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
     @Override
     public String generate(int size) {
-        return randomAlphanumeric(Math.max(size, MAX_CODE_LENGTH));
+        int possibleSize = size;
+
+        if (possibleSize < 1) {
+            possibleSize = DEFAULT_CODE_LENGTH;
+        } else if (possibleSize > MAX_CODE_LENGTH) {
+            possibleSize = MAX_CODE_LENGTH;
+        }
+
+        return randomAlphanumeric(possibleSize);
     }
 }
