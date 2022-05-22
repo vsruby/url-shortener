@@ -11,7 +11,7 @@ import java.net.URI;
 
 @RequiredArgsConstructor
 @Service
-public final class ShortUrlServiceImpl implements ShortUrlService {
+public class ShortUrlServiceImpl implements ShortUrlService {
 
     private final CodeGeneratorService codeGeneratorService;
     private final ShortUrlRepository shortUrlRepository;
