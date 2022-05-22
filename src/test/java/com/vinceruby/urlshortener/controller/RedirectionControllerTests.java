@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class RedirectionControllerTests {
 
@@ -31,5 +32,16 @@ public class RedirectionControllerTests {
 
         assertEquals(shortUrl.getDestination().toString(), response.getHeaders().get("Location").get(0));
         assertEquals(HttpStatus.MOVED_PERMANENTLY, response.getStatusCode());
+    }
+
+    @Test
+    public void itShouldReturnErrorResponseWhenInvalidCodeIsProvided() {
+        String invalidCode = "er404";
+        Mockito.when(mockShortUrlRepository.findByCode(invalidCode)).thenReturn(null);
+
+        var response = controller.redirect(invalidCode);
+
+        assertNull(response.getHeaders().get("Location"));
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 }
