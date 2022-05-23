@@ -1,4 +1,4 @@
-package com.vinceruby.urlshortener.integration;
+package com.vinceruby.urlshortener.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vinceruby.urlshortener.controller.ShortUrlController.ShortUrlResponse;
@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 )
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@Transactional
 public class ShortUrlControllerTest {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -50,7 +51,6 @@ public class ShortUrlControllerTest {
     }
 
     @Test
-    @Transactional
     public void itShouldCreateAShortUrl() throws Exception {
         String uri = "https://google.com";
 
