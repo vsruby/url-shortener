@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.OffsetDateTime;
@@ -27,7 +28,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @Setter
-@Table(name = "short_urls")
+@Table(name = "clicks")
 public class Click {
 
     @Column(name = "id", nullable = false, unique = true, updatable = false)
@@ -44,6 +45,7 @@ public class Click {
 
     // ---- RELATIONSHIPS ---- //
 
+    @JoinColumn(name = "short_url_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private ShortUrl shortUrl;
 

@@ -16,6 +16,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -64,8 +65,7 @@ public class ShortUrl {
     // ---- RELATIONSHIPS ---- //
 
     @Builder.Default
-    @JoinColumn(name = "short_url_id")
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shortUrl")
     private Collection<Click> clicks = new ArrayList<>();
 
     @Override
