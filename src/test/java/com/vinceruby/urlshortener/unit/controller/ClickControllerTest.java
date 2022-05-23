@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -57,5 +58,16 @@ public class ClickControllerTest {
         assertEquals(expectedPage, body.getPage());
         assertEquals(expectedTotal, body.getTotal());
         assertTrue(body.getClicks().stream().anyMatch(item -> item.getId().equals(click.getId().toString())));
+    }
+
+    @Test
+    public void itShouldReturnErrorResponseWhenInvalidCodeIsProvided() {
+        String invalidCode = "er404";
+        Mockito.when(mockShortUrlRepository.findByCode(invalidCode)).thenReturn(null);
+
+        var response = controller.indexForCode(invalidCode, 0, 20);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        Mockito.verifyNoInteractions(mockClickRepository);
     }
 }
