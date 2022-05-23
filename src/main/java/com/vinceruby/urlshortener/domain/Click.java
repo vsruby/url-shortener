@@ -44,7 +44,6 @@ public class Click {
 
     // ---- RELATIONSHIPS ---- //
 
-    @Column(name = "short_url_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private ShortUrl shortUrl;
 
