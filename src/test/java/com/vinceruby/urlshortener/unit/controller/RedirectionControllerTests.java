@@ -1,5 +1,6 @@
 package com.vinceruby.urlshortener.unit.controller;
 
+import com.vinceruby.urlshortener.contract.service.ClickService;
 import com.vinceruby.urlshortener.controller.RedirectionController;
 import com.vinceruby.urlshortener.domain.ShortUrl;
 import com.vinceruby.urlshortener.repository.ShortUrlRepository;
@@ -14,14 +15,17 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class RedirectionControllerTests {
 
+    private ClickService mockClickService;
     private ShortUrlRepository mockShortUrlRepository;
 
     private RedirectionController controller;
 
     @BeforeEach
     public void setup() {
+        mockClickService = Mockito.mock(ClickService.class);
         mockShortUrlRepository = Mockito.mock(ShortUrlRepository.class);
-        controller = new RedirectionController(mockShortUrlRepository);
+
+        controller = new RedirectionController(mockClickService, mockShortUrlRepository);
     }
 
     @Test
@@ -33,6 +37,7 @@ public class RedirectionControllerTests {
 
         assertEquals(shortUrl.getDestination().toString(), response.getHeaders().get("Location").get(0));
         assertEquals(HttpStatus.MOVED_PERMANENTLY, response.getStatusCode());
+        Mockito.verify(mockClickService).create(Mockito.eq(shortUrl));
     }
 
     @Test
@@ -44,5 +49,6 @@ public class RedirectionControllerTests {
 
         assertNull(response.getHeaders().get("Location"));
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        Mockito.verifyNoInteractions(mockClickService);
     }
 }

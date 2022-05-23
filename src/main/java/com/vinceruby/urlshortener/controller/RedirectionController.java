@@ -1,5 +1,6 @@
 package com.vinceruby.urlshortener.controller;
 
+import com.vinceruby.urlshortener.contract.service.ClickService;
 import com.vinceruby.urlshortener.domain.ShortUrl;
 import com.vinceruby.urlshortener.repository.ShortUrlRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 public class RedirectionController {
 
+    private final ClickService clickService;
     private final ShortUrlRepository shortUrlRepository;
 
     @GetMapping("/{code}")
@@ -31,6 +33,8 @@ public class RedirectionController {
         }
 
         log.debug("Code: [{}] exists, redirecting to [{}]", code, shortUrl.getDestination());
+
+        clickService.create(shortUrl);
 
         return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
                 .header("Location", shortUrl.getDestination().toString())
