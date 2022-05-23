@@ -1,6 +1,5 @@
 package com.vinceruby.urlshortener.domain;
 
-import com.vinceruby.urlshortener.domain.converter.UriAttributeConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,22 +8,16 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.net.URI;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -35,7 +28,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Setter
 @Table(name = "short_urls")
-public class ShortUrl {
+public class Click {
 
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     @GeneratedValue(generator = "UUID")
@@ -44,29 +37,16 @@ public class ShortUrl {
     @Type(type = "pg-uuid")
     private UUID id;
 
-    @Column(name = "code", nullable = false, unique = true)
-    private String code;
-
-    @Column(name = "destination")
-    @Convert(converter = UriAttributeConverter.class)
-    private URI destination;
-
     @Column(name = "created_at", updatable = false)
     @CreatedDate
     @CreationTimestamp
     private OffsetDateTime createdAt;
 
-    @Column(name = "updated_at")
-    @LastModifiedDate
-    @UpdateTimestamp
-    private OffsetDateTime updatedAt;
-
     // ---- RELATIONSHIPS ---- //
 
-    @Builder.Default
-    @JoinColumn(name = "short_url_id")
-    @OneToMany
-    private Collection<Click> clicks = new ArrayList<>();
+    @Column(name = "short_url_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ShortUrl shortUrl;
 
     @Override
     public boolean equals(Object o) {
@@ -78,12 +58,13 @@ public class ShortUrl {
             return false;
         }
 
-        ShortUrl shortUrl = (ShortUrl) o;
-        return Objects.equals(id, shortUrl.id);
+        Click click = (Click) o;
+        return Objects.equals(id, click.id);
     }
 
     @Override
     public int hashCode() {
         return this.getClass().hashCode();
     }
+
 }
