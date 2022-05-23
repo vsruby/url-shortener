@@ -86,7 +86,6 @@ public class ClickController {
     private final ShortUrlRepository shortUrlRepository;
 
     @GetMapping("/{code}")
-    @Transactional
     public ResponseEntity<Object> indexForCode(@PathVariable String code) {
         log.debug("Attempting to get clicks for code: [{}]", code);
 
