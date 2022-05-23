@@ -1,5 +1,6 @@
-package com.vinceruby.urlshortener.domain;
+package com.vinceruby.urlshortener.unit.domain;
 
+import com.vinceruby.urlshortener.domain.ShortUrl;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

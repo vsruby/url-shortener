@@ -1,6 +1,7 @@
-package com.vinceruby.urlshortener.controller;
+package com.vinceruby.urlshortener.unit.controller;
 
 import com.vinceruby.urlshortener.contract.service.ShortUrlService;
+import com.vinceruby.urlshortener.controller.ShortUrlController;
 import com.vinceruby.urlshortener.controller.ShortUrlController.CreateShortUrl;
 import com.vinceruby.urlshortener.controller.ShortUrlController.ShortUrlResponse;
 import com.vinceruby.urlshortener.domain.ShortUrl;

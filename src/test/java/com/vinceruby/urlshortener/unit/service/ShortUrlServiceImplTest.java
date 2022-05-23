@@ -1,8 +1,9 @@
-package com.vinceruby.urlshortener.service;
+package com.vinceruby.urlshortener.unit.service;
 
 import com.vinceruby.urlshortener.contract.service.CodeGeneratorService;
 import com.vinceruby.urlshortener.domain.ShortUrl;
 import com.vinceruby.urlshortener.repository.ShortUrlRepository;
+import com.vinceruby.urlshortener.service.ShortUrlServiceImpl;
 import com.vinceruby.urlshortener.testUtils.ShortUrlFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

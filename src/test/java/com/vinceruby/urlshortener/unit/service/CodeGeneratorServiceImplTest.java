@@ -1,6 +1,7 @@
-package com.vinceruby.urlshortener.service;
+package com.vinceruby.urlshortener.unit.service;
 
 import com.vinceruby.urlshortener.contract.service.CodeGeneratorService;
+import com.vinceruby.urlshortener.service.CodeGeneratorServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

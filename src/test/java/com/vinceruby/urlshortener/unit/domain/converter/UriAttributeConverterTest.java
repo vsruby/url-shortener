@@ -1,5 +1,6 @@
-package com.vinceruby.urlshortener.domain.converter;
+package com.vinceruby.urlshortener.unit.domain.converter;
 
+import com.vinceruby.urlshortener.domain.converter.UriAttributeConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

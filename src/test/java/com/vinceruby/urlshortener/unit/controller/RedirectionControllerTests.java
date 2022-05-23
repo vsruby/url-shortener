@@ -1,5 +1,6 @@
-package com.vinceruby.urlshortener.controller;
+package com.vinceruby.urlshortener.unit.controller;
 
+import com.vinceruby.urlshortener.controller.RedirectionController;
 import com.vinceruby.urlshortener.domain.ShortUrl;
 import com.vinceruby.urlshortener.repository.ShortUrlRepository;
 import com.vinceruby.urlshortener.testUtils.ShortUrlFactory;
