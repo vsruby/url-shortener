@@ -34,7 +34,7 @@ public class ShortUrlServiceImplTest {
     public void itShouldCreateANewShortUrl() throws URISyntaxException {
         String expectedCode = "aaaaa";
         URI expectedUri = new URI("https://google.com");
-        ShortUrl expectedShortUrl = ShortUrlFactory.shortUrl().setCode(expectedCode).setDestination(expectedUri);
+        ShortUrl expectedShortUrl = ShortUrlFactory.make().setCode(expectedCode).setDestination(expectedUri);
 
         Mockito.when(mockCodeGeneratorService.generate()).thenReturn(expectedCode);
         Mockito.when(mockShortUrlRepository.save(Mockito.argThat(arg -> arg.getCode().equals(expectedCode))))
@@ -50,7 +50,7 @@ public class ShortUrlServiceImplTest {
     public void itShouldCreateANewShortUrlWithLargerLengthAfterTheTriesCount() throws URISyntaxException {
         String expectedCode = "123456";
         URI expectedUri = new URI("https://google.com");
-        ShortUrl expectedShortUrl = ShortUrlFactory.shortUrl().setCode(expectedCode).setDestination(expectedUri);
+        ShortUrl expectedShortUrl = ShortUrlFactory.make().setCode(expectedCode).setDestination(expectedUri);
 
         Mockito.when(mockCodeGeneratorService.generate()).thenReturn("12345");
         Mockito.when(mockCodeGeneratorService.generate(DEFAULT_CODE_LENGTH + 1))

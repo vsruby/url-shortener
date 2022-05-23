@@ -30,7 +30,7 @@ public class RedirectionControllerTests {
 
     @Test
     public void itShouldReturnResponseWithTheCorrectLocationHeader() {
-        ShortUrl shortUrl = ShortUrlFactory.shortUrl();
+        ShortUrl shortUrl = ShortUrlFactory.make();
         Mockito.when(mockShortUrlRepository.findByCode(shortUrl.getCode())).thenReturn(shortUrl);
 
         var response = controller.redirect(shortUrl.getCode());

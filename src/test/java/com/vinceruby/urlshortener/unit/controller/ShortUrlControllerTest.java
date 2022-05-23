@@ -23,7 +23,7 @@ public class ShortUrlControllerTest {
 
         @Test
         public void itShouldBuildDTOFromDomainClass() {
-            ShortUrl shortUrl = ShortUrlFactory.shortUrl();
+            ShortUrl shortUrl = ShortUrlFactory.make();
 
             ShortUrlResponse response = ShortUrlResponse.fromDomain(shortUrl);
 
@@ -52,7 +52,7 @@ public class ShortUrlControllerTest {
 
     @Test
     public void itShouldCreateTheShortUrlWithTheProvidedDestination() {
-        ShortUrl shortUrl = ShortUrlFactory.shortUrl();
+        ShortUrl shortUrl = ShortUrlFactory.make();
         Mockito.when(mockShortUrlService.create(Mockito.eq(shortUrl.getDestination()))).thenReturn(shortUrl);
 
         var response = controller.create(CreateShortUrl.builder()
