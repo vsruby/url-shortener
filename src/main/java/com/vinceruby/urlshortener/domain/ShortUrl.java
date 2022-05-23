@@ -13,6 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -65,7 +66,7 @@ public class ShortUrl {
     // ---- RELATIONSHIPS ---- //
 
     @Builder.Default
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shortUrl")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shortUrl", orphanRemoval = true)
     private Collection<Click> clicks = new ArrayList<>();
 
     @Override
