@@ -13,6 +13,8 @@ import java.net.URI;
 @Service
 public class ShortUrlServiceImpl implements ShortUrlService {
 
+    private static final int TRIES_COUNT_THRESHOLD = 3;
+
     private final CodeGeneratorService codeGeneratorService;
     private final ShortUrlRepository shortUrlRepository;
 
@@ -28,15 +30,16 @@ public class ShortUrlServiceImpl implements ShortUrlService {
 
     private String generateUniqueCode() {
         String possibleCode = codeGeneratorService.generate();
-        int tries = 1;
+        int tries = 0;
         while(shortUrlRepository.existsByCode(possibleCode)) {
+            tries++;
             // if 3 tries still doesn't produce a unique code then try going with a larger length
-            if (tries > 3) {
-                possibleCode = codeGeneratorService.generate(CodeGeneratorService.DEFAULT_CODE_LENGTH + (tries - 3));
+            if (tries > TRIES_COUNT_THRESHOLD) {
+                int modifier = tries / TRIES_COUNT_THRESHOLD;
+                possibleCode = codeGeneratorService.generate(CodeGeneratorService.DEFAULT_CODE_LENGTH + modifier);
             } else {
                 possibleCode = codeGeneratorService.generate();
             }
-            tries++;
         }
 
         return possibleCode;
