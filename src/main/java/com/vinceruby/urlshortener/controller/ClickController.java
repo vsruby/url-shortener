@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @RequestMapping("/clicks")
 @RequiredArgsConstructor
@@ -52,41 +54,27 @@ public class ClickController {
         }
     }
 
+    @AllArgsConstructor
     @Getter
     @NoArgsConstructor
+    @Setter
     public static class ClickResponseList {
 
+        private int count;
+        private int page;
+        private long total;
         private Collection<ClickResponse> clicks = new ArrayList<>();
-        private int total;
-
-        public ClickResponseList(Collection<ClickResponse> clicks) {
-            this.clicks = clicks;
-            this.total = clicks.size();
-        }
-
-        public ClickResponseList setClicks(Collection<ClickResponse> clicks) {
-            this.clicks = clicks;
-            this.total = clicks.size();
-
-            return this;
-        }
-
-        public ClickResponseList setTotal(int total) {
-            if (total == this.clicks.size()) {
-                this.total = total;
-            } else {
-                this.total = this.clicks.size();
-            }
-
-            return this;
-        }
     }
 
     private final ClickRepository clickRepository;
     private final ShortUrlRepository shortUrlRepository;
 
     @GetMapping("/{code}")
-    public ResponseEntity<Object> indexForCode(@PathVariable String code) {
+    public ResponseEntity<Object> indexForCode(
+            @PathVariable String code,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
         log.debug("Attempting to get clicks for code: [{}]", code);
 
         ShortUrl shortUrl = shortUrlRepository.findByCode(code);
@@ -96,11 +84,21 @@ public class ClickController {
                     .body("{\"message\": \"Invalid code\"}");
         }
 
-        List<Click> clicks = clickRepository.findAllByShortUrlId(shortUrl.getId());
+        if (page < 0) {
+            page = 0;
+        }
+
+        if (size < 0) {
+            size = 20;
+        }
+
+        Page<Click> pagedClicks = clickRepository.findByShortUrlId(shortUrl.getId(), PageRequest.of(page, size));
 
         ClickResponseList list = new ClickResponseList();
-        list.setClicks(clicks.stream().map(ClickResponse::fromDomain).toList())
-                .setTotal(clicks.size());
+        list.setClicks(pagedClicks.stream().map(ClickResponse::fromDomain).toList())
+                .setCount(pagedClicks.getNumberOfElements())
+                .setPage(pagedClicks.getPageable().getPageNumber())
+                .setTotal(pagedClicks.getTotalElements());
 
         return ResponseEntity.ok(list);
     }
